@@ -1,0 +1,17 @@
+body {
+  mat-card {
+    @apply rounded border-primary-300 overflow-hidden #{!important};
+
+    &-header {
+      @apply bg-primary-200 px-4 py-3 #{!important};
+    }
+
+    &-title {
+      @apply font-semibold text-lg #{!important};
+    }
+
+    &-content {
+      @apply p-4 #{!important};
+    }
+  }
+}

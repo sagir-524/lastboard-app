@@ -1,0 +1,9 @@
+@layer components {
+  .btn {
+    @apply border-0 rounded outline-none text-sm leading-[1.5] px-3 py-2 transition-all font-semibold;
+
+    &-primary {
+      @apply bg-primary-default text-[white] hover:bg-primary-900;
+    }
+  }
+}

@@ -32,3 +32,11 @@ button {
 :disabled {
   @apply cursor-not-allowed;
 }
+
+label {
+  @apply font-semibold;
+}
+
+@import './assets/scss/card.scss';
+@import './assets/scss/form.scss';
+@import './assets/scss/button.scss';

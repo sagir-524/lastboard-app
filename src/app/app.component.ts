@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MAT_CARD_CONFIG } from '@angular/material/card';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,8 +7,9 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  providers: [
+    { provide: MAT_CARD_CONFIG, useValue: { appearance: 'outlined' } }
+  ]
 })
-export class AppComponent {
-  title = 'lastboard-app';
-}
+export class AppComponent {}
