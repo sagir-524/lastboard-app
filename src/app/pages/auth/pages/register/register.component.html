@@ -3,7 +3,7 @@
     <mat-card-title>Register</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="form">
+    <form [formGroup]="form" (ngSubmit)="register()">
       <div class="flex flex-wrap gap-4">
         <div class="flex-1">
           <div class="!mb-4">
@@ -31,7 +31,12 @@
         <app-password-field [control]="form.controls.password_confirmation"></app-password-field>
       </div>
       <div class="flex items-center gap-3 pt-1">
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary inline-flex" [disabled]="loading()">
+          @if (loading()) {
+            <app-loader></app-loader>&nbsp;
+          }
+          Register
+        </button>
         <p class="m-0 grow text-right">Already have an account? <a class="text-danger-600 font-medium" routerLink="../login">Login here</a></p>
       </div>
     </form>

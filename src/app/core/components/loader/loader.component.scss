@@ -1,0 +1,22 @@
+mat-icon {
+  color: inherit;
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+:host(.show-inline) {
+  @apply inline-flex;
+
+  mat-icon {
+    font-size: 1lh;
+    height: 1lh;
+    line-height: 1em;
+    width: 1lh;
+  }
+}
+
+:host(.show-block) {
+  @apply flex h-[300px] items-center justify-center;
+}

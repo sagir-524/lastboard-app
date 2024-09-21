@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -9,6 +9,9 @@ import { MatCardModule } from "@angular/material/card";
 import { passwordPattern } from "../../../../utils/pattersn";
 import { PasswordFieldComponent } from "../../components/password-field/password-field.component";
 import { RouterLink } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { LoaderComponent } from "../../../../core/components/loader/loader.component";
 
 @Component({
   selector: "app-register",
@@ -18,12 +21,15 @@ import { RouterLink } from "@angular/router";
     ReactiveFormsModule,
     PasswordFieldComponent,
     RouterLink,
+    LoaderComponent
   ],
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",
 })
 export class RegisterComponent {
   readonly #fb = inject(FormBuilder);
+  readonly #http = inject(HttpClient);
+  protected loading = signal<boolean>(false);
 
   protected form = this.#fb.nonNullable.group(
     {
@@ -46,4 +52,20 @@ export class RegisterComponent {
       },
     }
   );
+
+  register() {
+    this.loading.set(true);
+
+    // this.#http
+    //   .post("auth/register", this.form.value)
+    //   .pipe(takeUntilDestroyed())
+    //   .subscribe({
+    //     next: (res) => {
+    //       console.log(res);
+    //     },
+    //     error: (error) => {
+    //       console.log(error);
+    //     },
+    //   });
+  }
 }
