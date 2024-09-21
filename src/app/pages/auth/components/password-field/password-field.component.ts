@@ -12,4 +12,10 @@ import { MatIconModule } from "@angular/material/icon";
 export class PasswordFieldComponent {
   control = input.required<FormControl<string>>();
   protected inputType = signal<"text" | "password">("password");
+
+  toggleInputType(): void {
+    this.inputType.update((value) => {
+      return value === "text" ? "password" : "text";
+    });
+  }
 }

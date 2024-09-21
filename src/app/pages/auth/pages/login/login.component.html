@@ -1,0 +1,22 @@
+<mat-card appearance="outlined">
+  <mat-card-header class="justify-center">
+    <mat-card-title>Login</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <div class="!mb-4">
+        <label>Email</label>
+        <input type="email" class="form-control" formControlName="email">
+      </div>
+      <div class="!mb-4">
+        <label>Password</label>
+        <app-password-field [control]="form.controls.password"></app-password-field>
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button class="btn btn-primary" type="submit">Login</button>
+        <p class="m-0 grow text-right"><a href="javascript:void(0)" class="text-danger-600 font-medium">Forgot password?</a></p>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+<p class="my-4 text-center">Don't have an account? <a routerLink="../register" class="text-danger-600 font-medium">Click here to register.</a></p>
