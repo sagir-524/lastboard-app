@@ -1,0 +1,3 @@
+@if ((control().dirty || control().touched || submitted()) && error()) {
+  <p class="text-danger-500 font-semibold text-xs mt-1 mb-0">{{ error() }}</p>
+}

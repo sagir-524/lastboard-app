@@ -2,7 +2,7 @@ import { Component, inject, signal } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { PasswordFieldComponent } from "../../components/password-field/password-field.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { passwordPattern } from "../../../../utils/pattersn";
+import { passwordPattern } from "../../../../core/utils/common-patterns";
 import { RouterLink } from "@angular/router";
 import { LoaderComponent } from "../../../../core/components/loader/loader.component";
 

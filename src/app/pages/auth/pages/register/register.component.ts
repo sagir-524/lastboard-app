@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, DestroyRef, inject, signal } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -6,12 +6,14 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatCardModule } from "@angular/material/card";
-import { passwordPattern } from "../../../../utils/pattersn";
+import { passwordPattern } from "../../../../core/utils/common-patterns";
 import { PasswordFieldComponent } from "../../components/password-field/password-field.component";
 import { RouterLink } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { LoaderComponent } from "../../../../core/components/loader/loader.component";
+import { firstValueFrom } from "rxjs";
+import { FormErrorComponent } from "../../../../core/components/form-error/form-error.component";
 
 @Component({
   selector: "app-register",
@@ -21,7 +23,8 @@ import { LoaderComponent } from "../../../../core/components/loader/loader.compo
     ReactiveFormsModule,
     PasswordFieldComponent,
     RouterLink,
-    LoaderComponent
+    LoaderComponent,
+    FormErrorComponent,
   ],
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",
@@ -29,6 +32,8 @@ import { LoaderComponent } from "../../../../core/components/loader/loader.compo
 export class RegisterComponent {
   readonly #fb = inject(FormBuilder);
   readonly #http = inject(HttpClient);
+  readonly #destroyRef = inject(DestroyRef);
+
   protected loading = signal<boolean>(false);
 
   protected form = this.#fb.nonNullable.group(
@@ -53,19 +58,20 @@ export class RegisterComponent {
     }
   );
 
-  register() {
-    this.loading.set(true);
+  async register() {
+    if (this.form.invalid) {
+      return;
+    }
 
-    // this.#http
-    //   .post("auth/register", this.form.value)
-    //   .pipe(takeUntilDestroyed())
-    //   .subscribe({
-    //     next: (res) => {
-    //       console.log(res);
-    //     },
-    //     error: (error) => {
-    //       console.log(error);
-    //     },
-    //   });
+    try {
+      this.loading.set(true);
+      const res = await firstValueFrom(
+        this.#http.post("auth/register", this.form.value)
+      );
+    } catch (error: unknown) {
+      console.log(error);
+    } finally {
+      this.loading.set(false);
+    }
   }
 }
