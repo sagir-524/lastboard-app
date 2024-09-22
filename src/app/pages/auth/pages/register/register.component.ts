@@ -23,6 +23,7 @@ import {
   attachServerErrorsToForm,
   ServerValidationError,
 } from "../../../../core/utils/form-helpers";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-register",
@@ -43,8 +44,10 @@ export class RegisterComponent {
   readonly #fb = inject(FormBuilder);
   readonly #http = inject(HttpClient);
   readonly #destroyRef = inject(DestroyRef);
+  readonly #toastr = inject(ToastrService);
 
   protected loading = signal<boolean>(false);
+  protected registered = signal<boolean>(false);
 
   protected form = this.#fb.nonNullable.group({
     firstname: ["", Validators.required],
@@ -87,19 +90,16 @@ export class RegisterComponent {
       .post("auth/register", this.form.value)
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe({
-        next: console.log,
+        next: () => this.registered.set(true),
         error: ({ status, error }: HttpErrorResponse) => {
-          switch (status) {
-            case HttpStatusCode.UnprocessableEntity:
-              const errors = error.errors as ServerValidationError[];
-              attachServerErrorsToForm(this.form, errors, this.#destroyRef);
-              break;
-            case HttpStatusCode.BadRequest:
-          }
-
           if (status === HttpStatusCode.UnprocessableEntity) {
             const errors = error.errors as ServerValidationError[];
             attachServerErrorsToForm(this.form, errors, this.#destroyRef);
+          } else {
+            this.#toastr.error(
+              "Something went wrong. Please try again later.",
+              "Error"
+            );
           }
         },
       })
