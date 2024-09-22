@@ -9,12 +9,20 @@ import { MatCardModule } from "@angular/material/card";
 import { passwordPattern } from "../../../../core/utils/common-patterns";
 import { PasswordFieldComponent } from "../../components/password-field/password-field.component";
 import { RouterLink } from "@angular/router";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpStatusCode,
+} from "@angular/common/http";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { LoaderComponent } from "../../../../core/components/loader/loader.component";
 import { firstValueFrom } from "rxjs";
 import { FormErrorComponent } from "../../../../core/components/form-error/form-error.component";
 import { NgIf } from "@angular/common";
+import {
+  attachServerErrorsToForm,
+  ServerValidationError,
+} from "../../../../core/utils/form-helpers";
 
 @Component({
   selector: "app-register",
@@ -26,7 +34,7 @@ import { NgIf } from "@angular/common";
     RouterLink,
     LoaderComponent,
     FormErrorComponent,
-    NgIf
+    NgIf,
   ],
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",
@@ -38,42 +46,63 @@ export class RegisterComponent {
 
   protected loading = signal<boolean>(false);
 
-  protected form = this.#fb.nonNullable.group(
-    {
-      firstname: ["", Validators.required],
-      lastname: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-      password: [
-        "",
-        [Validators.required, Validators.pattern(passwordPattern)],
-      ],
-      password_confirmation: ["", [Validators.required]],
-    },
-    {
-      validators: ({ value }: AbstractControl<any>) => {
-        if (value.password !== value.password_confirmation) {
-          return { passwordConfirmation: true };
-        }
+  protected form = this.#fb.nonNullable.group({
+    firstname: ["", Validators.required],
+    lastname: ["", Validators.required],
+    email: ["", [Validators.required, Validators.email]],
+    password: ["", [Validators.required, Validators.pattern(passwordPattern)]],
+    password_confirmation: [
+      "",
+      [
+        Validators.required,
+        ({ value, parent }: AbstractControl) => {
+          const password = parent?.get("password")?.value;
 
-        return null;
-      },
-    }
-  );
+          if (password && password !== value) {
+            return { sameAs: true };
+          }
+
+          return null;
+        },
+      ],
+    ],
+  });
+
+  constructor() {
+    this.form.controls.password.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.form.controls.password_confirmation.updateValueAndValidity();
+      });
+  }
 
   async register() {
-    if (this.form.invalid) {
-      return;
-    }
+    this.form.updateValueAndValidity();
+    // if (this.form.invalid) {
+    //   return;
+    // }
 
-    try {
-      this.loading.set(true);
-      const res = await firstValueFrom(
-        this.#http.post("auth/register", this.form.value)
-      );
-    } catch (error: unknown) {
-      console.log(error);
-    } finally {
-      this.loading.set(false);
-    }
+    this.loading.set(true);
+    this.#http
+      .post("auth/register", this.form.value)
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe({
+        next: console.log,
+        error: ({ status, error }: HttpErrorResponse) => {
+          switch (status) {
+            case HttpStatusCode.UnprocessableEntity:
+              const errors = error.errors as ServerValidationError[];
+              attachServerErrorsToForm(this.form, errors, this.#destroyRef);
+              break;
+            case HttpStatusCode.BadRequest:
+          }
+
+          if (status === HttpStatusCode.UnprocessableEntity) {
+            const errors = error.errors as ServerValidationError[];
+            attachServerErrorsToForm(this.form, errors, this.#destroyRef);
+          }
+        },
+      })
+      .add(() => this.loading.set(false));
   }
 }

@@ -35,7 +35,8 @@
           [control]="form.controls.email"
           [messages]="[
             { name: 'required', message: 'Email is required.' },
-            { name: 'email', message: 'Email is not valid.' }
+            { name: 'email', message: 'Email is not valid.' },
+            { name: 'database.unique', message: 'Email is already taken.' }
           ]"
           [submitted]="ngForm.submitted"
         ></app-form-error>
@@ -47,19 +48,19 @@
           [control]="form.controls.password"
           [messages]="[
             { name: 'required', message: 'Password is required.' },
-            { name: 'pattern', message: 'Password must have 8 or more characters, contain 1 uppercase and 1 lowercase letter, 1 number and 1 special character.' }
+            { name: 'pattern', message: 'Password must have 8 or more characters, contain 1 uppercase and 1 lowercase letter, 1 number and 1 special character.' },
+            { name: 'regex', message: 'Password must have 8 or more characters, contain 1 uppercase and 1 lowercase letter, 1 number and 1 special character.' }
           ]"
           [submitted]="ngForm.submitted"
         ></app-form-error>
       </div>
-      <div class="!mb-4" *ngIf="form.controls.password_confirmation as pc">
+      <div class="!mb-4">
         <label>Confirm Password</label>
         <app-password-field [control]="form.controls.password_confirmation"></app-password-field>
         <app-form-error
-          *ngIf="pc.dirty || pc.touched"
-          [control]="form"
+          [control]="form.controls.password_confirmation"
           [messages]="[
-            { name: 'passwordConfirmation', message: 'Confirmation does not match with password.' }
+            { name: 'sameAs', message: 'Confirmation does not match with password.' }
           ]"
           [submitted]="ngForm.submitted"
         ></app-form-error>

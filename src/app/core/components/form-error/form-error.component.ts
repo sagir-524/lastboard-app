@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AbstractControl, ValidationErrors } from "@angular/forms";
-import { map, startWith } from "rxjs";
+import { map, merge, startWith, tap } from "rxjs";
 import { FormErrorMessage } from "./form-error-message.type";
 
 @Component({
@@ -35,7 +35,11 @@ export class FormErrorComponent implements OnInit {
 
   ngOnInit(): void {
     const control = this.control();
-    control.valueChanges
+
+    merge(
+      control.valueChanges.pipe(startWith(control.value)),
+      control.statusChanges.pipe(startWith(control.status))
+    )
       .pipe(
         startWith(control.value),
         map(() => control.errors),
