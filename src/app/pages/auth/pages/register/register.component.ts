@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { LoaderComponent } from "../../../../core/components/loader/loader.component";
 import { firstValueFrom } from "rxjs";
 import { FormErrorComponent } from "../../../../core/components/form-error/form-error.component";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: "app-register",
@@ -25,6 +26,7 @@ import { FormErrorComponent } from "../../../../core/components/form-error/form-
     RouterLink,
     LoaderComponent,
     FormErrorComponent,
+    NgIf
   ],
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",

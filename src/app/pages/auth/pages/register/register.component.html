@@ -52,10 +52,11 @@
           [submitted]="ngForm.submitted"
         ></app-form-error>
       </div>
-      <div class="!mb-4">
+      <div class="!mb-4" *ngIf="form.controls.password_confirmation as pc">
         <label>Confirm Password</label>
         <app-password-field [control]="form.controls.password_confirmation"></app-password-field>
         <app-form-error
+          *ngIf="pc.dirty || pc.touched"
           [control]="form"
           [messages]="[
             { name: 'passwordConfirmation', message: 'Confirmation does not match with password.' }
