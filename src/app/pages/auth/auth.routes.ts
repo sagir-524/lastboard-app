@@ -1,10 +1,12 @@
 import { Routes } from "@angular/router";
+import { AuthHttpService } from "./services/auth.service";
 
 export const authRoutes: Routes = [
   {
     path: "auth",
     loadComponent: () =>
       import("./auth.component").then((c) => c.AuthComponent),
+    providers: [AuthHttpService],
     children: [
       {
         path: "register",
