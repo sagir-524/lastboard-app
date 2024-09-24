@@ -1,18 +1,5 @@
 <div class="py-8 text-center">
   <h3 class="text-lg text-success-600 mb-4">You are registered</h3>
   <p class="mb-4">A verification email is sent in your email (<strong>{{ email() }}</strong>). Please check your email and click on the veirfication link to verify your account.</p>
-  <p class="mb-1 ">
-    Didn't receive your email?
-    <br>
-    @if (!countDown()) {
-      <a href="javascript:void(0)" (click)="resendVerificationEmail()" class="inline-flex gap-1 items-center" [class.pointer-events-none]="loading()" [class.opacity-85]="loading()">
-        @if (loading()) {
-          <app-loader></app-loader>
-        }
-        <span>Resend verifcation email.</span>
-      </a>
-    } @else {
-      Resend in <strong>{{ countDown() }}</strong> seconds.
-    }
-  </p>
+  <app-resend-verification-mail [email]="email()"></app-resend-verification-mail>
 </div>

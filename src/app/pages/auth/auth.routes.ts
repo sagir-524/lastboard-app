@@ -20,6 +20,13 @@ export const authRoutes: Routes = [
         loadComponent: () =>
           import("./pages/login/login.component").then((c) => c.LoginComponent),
       },
+      {
+        path: "verify-email/:email/:token",
+        loadComponent: () =>
+          import("./pages/verify-email/verify-email.component").then(
+            (c) => c.VerifyEmailComponent
+          ),
+      },
     ],
   },
 ];

@@ -1,0 +1,19 @@
+<div class="py-8 text-center">
+  @let _data = data();
+  @if (_data) {
+    @if (_data.verified) {
+      <h3 class="text-2xl text-success-600 mb-4">
+        Congratulations
+      </h3>
+      <p class="text-[16px]">Your email is verified successfully. Please <a routerLink="../login" class="font-semibold">Login here</a>.</p>
+    } @else {
+      <h3 class="text-2xl text-danger-600 mb-4">Oops!</h3>
+      <p class="text-[16px] mb-2">{{ _data.message }}</p>
+      @if (_data.resendable) {
+        <app-resend-verification-mail [email]="email()"></app-resend-verification-mail>
+      }
+    }
+  } @else {
+    <app-loader display="block"></app-loader>
+  }
+</div>

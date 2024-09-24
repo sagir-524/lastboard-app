@@ -17,4 +17,8 @@ export class AuthHttpService {
   resendVerificationMail(email: string) {
     return this.#http.post("auth/resend-verification-email", { email });
   }
+
+  verifyEmail(token: string) {
+    return this.#http.post("auth/verify", { token });
+  }
 }
