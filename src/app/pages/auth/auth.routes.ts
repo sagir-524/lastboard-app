@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { AuthHttpService } from "./services/auth-http.service";
+import { guestGuard } from "../../core/guards/guest.guard";
 
 export const authRoutes: Routes = [
   {
@@ -10,6 +11,7 @@ export const authRoutes: Routes = [
     children: [
       {
         path: "register",
+        canActivate: [guestGuard],
         loadComponent: () =>
           import("./pages/register/register.component").then(
             (c) => c.RegisterComponent
@@ -17,6 +19,7 @@ export const authRoutes: Routes = [
       },
       {
         path: "login",
+        canActivate: [guestGuard],
         loadComponent: () =>
           import("./pages/login/login.component").then((c) => c.LoginComponent),
       },

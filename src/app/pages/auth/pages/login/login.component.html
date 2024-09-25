@@ -3,7 +3,7 @@
     <mat-card-title>Login</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="form" #ngForm="ngForm">
+    <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="!mb-4">
         <label>Email</label>
         <input type="email" class="form-control" formControlName="email">
@@ -30,7 +30,7 @@
         ></app-form-error>
       </div>
       <div class="flex items-center gap-3 pt-2">
-        <button class="btn btn-primary inline-flex" type="submit" disabled="loading()">
+        <button class="btn btn-primary inline-flex" type="submit" [disabled]="loading()">
           @if (loading()) {
             <app-loader></app-loader>&nbsp;
           }

@@ -7,10 +7,6 @@ import { TokenResponse } from "../types/token-response.type";
 export class AuthHttpService {
   readonly #http = inject(HttpClient);
 
-  constructor() {
-    console.log("AuthHttpService initialized");
-  }
-
   register(data: RegistrationRequestBody) {
     return this.#http.post("auth/register", data);
   }
@@ -24,6 +20,6 @@ export class AuthHttpService {
   }
 
   login(email: string, password: string) {
-    return this.#http.post<TokenResponse>('auth/login', { email, password })
+    return this.#http.post<TokenResponse>("auth/login", { email, password });
   }
 }

@@ -3,7 +3,7 @@ import { MatCardModule } from "@angular/material/card";
 import { PasswordFieldComponent } from "../../components/password-field/password-field.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { passwordPattern } from "../../../../core/utils/common-patterns";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { LoaderComponent } from "../../../../core/components/loader/loader.component";
 import { AuthHttpService } from "../../services/auth-http.service";
 import { ToastrService } from "ngx-toastr";
@@ -14,6 +14,7 @@ import {
   attachServerErrorsToForm,
   ServerValidationError,
 } from "../../../../core/utils/form-helpers";
+import { AuthStore } from "../../stores/auth.store";
 
 @Component({
   selector: "app-login",
@@ -34,6 +35,8 @@ export class LoginComponent {
   readonly #authHttpService = inject(AuthHttpService);
   readonly #toastr = inject(ToastrService);
   readonly #destroyRef = inject(DestroyRef);
+  readonly #authStore = inject(AuthStore);
+  readonly #router = inject(Router);
 
   protected emailVerified = signal(true);
   protected loading = signal(false);
@@ -58,8 +61,9 @@ export class LoginComponent {
       )
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe({
-        next: (res) => {
-          console.log(res);
+        next: ({ user, token, refreshToken }) => {
+          this.#authStore.login(user, token, refreshToken);
+          this.#router.navigateByUrl("/");
         },
         error: ({ status, error }: HttpErrorResponse) => {
           if (status === HttpStatusCode.UnprocessableEntity) {
