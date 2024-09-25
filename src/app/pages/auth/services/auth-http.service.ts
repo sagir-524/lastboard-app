@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { RegistrationRequestBody } from "../types/registration-request-body.type";
+import { TokenResponse } from "../types/token-response.type";
 
 @Injectable()
 export class AuthHttpService {
@@ -20,5 +21,9 @@ export class AuthHttpService {
 
   verifyEmail(token: string) {
     return this.#http.post("auth/verify", { token });
+  }
+
+  login(email: string, password: string) {
+    return this.#http.post<TokenResponse>('auth/login', { email, password })
   }
 }

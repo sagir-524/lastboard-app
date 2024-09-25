@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, input, signal } from '@angular/core';
 import { BehaviorSubject, interval, take } from 'rxjs';
-import { AuthHttpService } from '../../services/auth.service';
+import { AuthHttpService } from '../../services/auth-http.service';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { LoaderComponent } from '../../../../core/components/loader/loader.component';

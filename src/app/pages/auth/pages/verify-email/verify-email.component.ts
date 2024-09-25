@@ -1,5 +1,5 @@
 import { Component, inject, signal, Signal } from "@angular/core";
-import { AuthHttpService } from "../../services/auth.service";
+import { AuthHttpService } from "../../services/auth-http.service";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { LoaderComponent } from "../../../../core/components/loader/loader.component";
 import { catchError, map, of } from "rxjs";

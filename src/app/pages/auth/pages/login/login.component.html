@@ -3,14 +3,31 @@
     <mat-card-title>Login</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="form">
+    <form [formGroup]="form" #ngForm="ngForm">
       <div class="!mb-4">
         <label>Email</label>
         <input type="email" class="form-control" formControlName="email">
+        <app-form-error
+          [control]="form.controls.email"
+          [submitted]="ngForm.submitted"
+          [messages]="[
+            { name: 'required', message: 'Email is required' },
+            { name: 'email', message: 'Email is not valid' }
+          ]"
+        ></app-form-error>
       </div>
       <div class="!mb-4">
         <label>Password</label>
         <app-password-field [control]="form.controls.password"></app-password-field>
+        <app-form-error
+          [control]="form.controls.password"
+          [messages]="[
+            { name: 'required', message: 'Password is required.' },
+            { name: 'pattern', message: 'Password must have 8 or more characters, contain 1 uppercase and 1 lowercase letter, 1 number and 1 special character.' },
+            { name: 'regex', message: 'Password must have 8 or more characters, contain 1 uppercase and 1 lowercase letter, 1 number and 1 special character.' }
+          ]"
+          [submitted]="ngForm.submitted"
+        ></app-form-error>
       </div>
       <div class="flex items-center gap-3 pt-2">
         <button class="btn btn-primary inline-flex" type="submit" disabled="loading()">

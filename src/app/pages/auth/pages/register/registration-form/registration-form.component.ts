@@ -17,7 +17,7 @@ import { FormErrorComponent } from "../../../../../core/components/form-error/fo
 import { PasswordFieldComponent } from "../../../components/password-field/password-field.component";
 import { LoaderComponent } from "../../../../../core/components/loader/loader.component";
 import { RouterLink } from "@angular/router";
-import { AuthHttpService } from "../../../services/auth.service";
+import { AuthHttpService } from "../../../services/auth-http.service";
 import { RegistrationRequestBody } from "../../../types/registration-request-body.type";
 
 @Component({

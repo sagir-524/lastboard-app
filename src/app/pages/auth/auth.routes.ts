@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { AuthHttpService } from "./services/auth.service";
+import { AuthHttpService } from "./services/auth-http.service";
 
 export const authRoutes: Routes = [
   {
