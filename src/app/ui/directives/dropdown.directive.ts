@@ -20,13 +20,13 @@ export class DropdownTriggerDirective {
   openDropdown($event: MouseEvent): void {
     $event.preventDefault();
     $event.stopPropagation();
-    this.dropdown().active.update((value) => !value);
+    this.dropdown().toggle();
   }
 
   @HostListener('document:click')
   closeDropdown(): void {
     if (this.dropdown().active()) {
-      this.dropdown().active.set(false);
+      this.dropdown().toggle()
     }
   }
 }
@@ -44,4 +44,12 @@ export class DropdownDirective {
   classNames = 'lb-dropdown'
   
   active = signal(false);
+
+  toggle() {
+    this.active.update((value) => !value)
+  }
+
+  constructor() {
+    console.log(this.active())
+  }
 }

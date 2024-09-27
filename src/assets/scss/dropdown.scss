@@ -3,6 +3,26 @@
     @apply relative;
   }
 
-  @apply absolute right-0 top-full invisible opacity-0 border-primary-900;
+  @apply absolute right-0 top-full invisible opacity-0 border-primary-900 min-w-[180px] bg-primary-700 list-none m-0 p-0;
   transition: all .3s ease;
+
+  &.active {
+    @apply visible opacity-100;
+  }
+
+  > li {
+    > a {
+      @apply no-underline block text-right text-[15px] font-medium px-4 py-2 border-b-[1px] border-b-primary-900;
+      transition: padding .3s ease;
+
+      &:hover,
+      &:focus {
+        @apply pr-6 pl-2;
+      }
+    }
+
+    &:last-child {
+      @apply border-b-0;
+    }
+  }
 }
