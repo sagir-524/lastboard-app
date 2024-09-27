@@ -1,0 +1,26 @@
+<header class="px-4 flex flex-wrap justify-between items-center">
+  <a routerLink="/" class="text-[white] no-underline text-2xl font-extrabold leading-[30px] py-2.5 px-2">Lastboard</a>
+
+  <nav>
+    <ul class="flex flex-row flex-wrap px-2 py-0 list-none menu">
+      @if (loggedIn()) {
+        @let _user = user();
+        @if (_user) {
+          <li class="menu-item" appDropdownContainer>
+            <a href="javascript:void(0)" appDropdownTrigger [dropdown]="dropdown">
+              {{ _user.firstname }} {{ _user.lastname }}
+              <mat-icon>arrow_drop_down</mat-icon>
+            </a>
+            <ul appDropdown #dropdown="dropdown">
+              <li><a href="javascript:void(0)">Profile</a></li>
+              <li><a href="javascript:void(0)">Logout</a></li>
+            </ul>
+          </li>
+        }
+      } @else {
+        <li class="menu-item"><a routerLink="/auth/login">Login</a></li>
+        <li class="menu-item"><a routerLink="/auth/register">Register</a></li>
+      }
+    </ul>
+  </nav>
+</header>

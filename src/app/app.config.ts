@@ -9,14 +9,12 @@ import { provideAnimationsAsync } from "@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { httpInterceptor } from "./core/interceptors/http.interceptor";
 import { provideToastr } from "ngx-toastr";
-import { tokenInterceptor } from "./core/interceptors/token.interceptor";
-import { refreshInterceptor } from "./core/interceptors/refresh.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideHttpClient(
-      withInterceptors([httpInterceptor, tokenInterceptor, refreshInterceptor])
+      withInterceptors([httpInterceptor])
     ),
     provideRouter(routes),
     provideAnimationsAsync(),

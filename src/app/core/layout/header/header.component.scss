@@ -1,0 +1,15 @@
+:host {
+  @apply block bg-primary-900 text-[white];
+}
+
+.menu-item {
+  > a {
+    @apply flex items-center gap-2 text-[15px] no-underline text-[white] leading-[2em] font-medium py-[15px] px-3;
+
+    mat-icon {
+      font-size: inherit;
+      height: 1lh;
+      width: 1lh;
+    }
+  }
+}

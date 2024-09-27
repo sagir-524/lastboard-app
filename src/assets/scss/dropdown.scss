@@ -1,0 +1,8 @@
+.lb-dropdown {
+  &-container {
+    @apply relative;
+  }
+
+  @apply absolute right-0 top-full invisible opacity-0 border-primary-900;
+  transition: all .3s ease;
+}

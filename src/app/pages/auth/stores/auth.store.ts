@@ -34,7 +34,7 @@ export const AuthStore = signalStore(
   { providedIn: "root" },
   withState(initialState),
   withComputed(({ token, refreshToken, user }) => ({
-    loggedIn: computed(() => !!token() && !!refreshToken() && !!user()),
+    loggedIn: computed(() => !!token() && !!refreshToken()),
     _primaryState: computed(() => ({
       token: token(),
       refreshToken: refreshToken(),
@@ -91,7 +91,7 @@ export const AuthStore = signalStore(
 
         patchState(store, { user, token, refreshToken });
       },
-      logout: (localStorage: Storage) => {
+      logout: () => {
         if (
           isPlatformBrowser(platformId) &&
           document.defaultView?.localStorage
@@ -120,7 +120,16 @@ export const AuthStore = signalStore(
             })
             .pipe(
               switchMap(({ user, token, refreshToken }) => {
-                patchState(store, { user, token, refreshToken, refreshing: false });
+                if (
+                  isPlatformBrowser(platformId) &&
+                  document.defaultView?.localStorage
+                ) {
+                  const localStorage = document.defaultView.localStorage;
+                  localStorage.setItem("_lb_token", token);
+                  localStorage.setItem("_lb_refresh_token", refreshToken);
+                }
+        
+                patchState(store, { user, token, refreshToken });
                 return of(store.loggedIn());
               }),
               catchError(() => of(false))
@@ -129,7 +138,7 @@ export const AuthStore = signalStore(
       },
     })
   ),
-  withHooks((store, http = inject(HttpClient)) => ({
+  withHooks((store) => ({
     onInit: () => {
       store._getTokenFromStorage();
       store._loadUserIfNotLoader();
